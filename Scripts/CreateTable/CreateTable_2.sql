@@ -57,7 +57,7 @@ CREATE TABLE Procedimentos (
   tipo VARCHAR(50) NOT NULL, 
   segmento VARCHAR(100) NOT NULL, 
   PAC BOOLEAN NOT NULL, 
-  diretriz_de_utilizacao VARCHAR(100) NOT NULL
+  diretriz_de_utilizacao INT NOT NULL
 );
 
 CREATE TABLE PlanoHospitalar (
@@ -109,6 +109,24 @@ CREATE TABLE Empresa (
   numero_endereco INT NOT NULL
 );
 
+CREATE TABLE EmpresaMEI(
+  CNPJ CHAR(14) NOT NULL PRIMARY KEY,
+  CCMEI blob not null,
+  ID_plano INT NOT NULL,
+  FOREIGN KEY(CNPJ) REFERENCES Empresa(cnpj),
+  FOREIGN KEY(ID_plano) REFERENCES PlanoDeSaude(id_plano)
+);
+
+create TABLE EmpresasDiversas(
+  CNPJ CHAR(14) PRIMARY KEY NOT NULL,
+  contrato_social blob NOT NULL,
+  FGTS blob not null,
+  tipo varchar(3) NOT NULL,
+  id_plano int not null,
+  FOREIGN KEY(CNPJ) REFERENCES Empresa(cnpj),
+  FOREIGN KEY(ID_plano) REFERENCES PlanoDeSaude(id_plano)
+);
+
 CREATE TABLE PessoaFisica (
   CPF CHAR(11) NOT NULL PRIMARY KEY,
   RG CHAR(8) Not NULL UNIQUE,
@@ -138,6 +156,17 @@ create TABLE Telefone (
   fOREIGN KEY (CPF) REFERENCES PessoaFisica(CPF)
 );
 
+ CREATE TABLE Funcionario(
+   CPF CHAR(11) NOT NULL,
+   cnpj_empresa CHAR(14) NOT NULL,
+   clt char(9) not null UNIQUE,
+   CBO CHAR(6) NOT NULL,
+   data_admissao DATE NOT NULL,
+   PRIMARY KEY(CPF, cnpj_empresa),
+   FOREIGN KEY(CPF) REFERENCES PessoaFisica(CPF),
+   FOREIGN key(cnpj_empresa) REFERENCES Empresa(CNPJ)
+ );
+
 
 CREATE TABLE Dependente(
  	CPF_dependente CHAR(11) NOT NULL PRIMARY KEY,
@@ -147,3 +176,70 @@ CREATE TABLE Dependente(
   	CPF_responsavel CHAR(11),
   	FOREIGN KEY (CPF_dependente) REFERENCES PessoaFisica(CPF)
  ); 
+ 
+  CREATE TABLE AquisicaoPlanoFamilia(
+  CPF_beneficiario CHAR(11) NOT NULL,
+  cpf_dependente CHAR(11) NOT NULL,
+  ID_plano INT NOT NULL,
+  PRIMARY KEY(cpf_dependente, CPF_beneficiario),
+  FOREIGN KEY(ID_plano) REFERENCES PlanoDeSaude(id_plano),
+  FOREIGN KEY(cpf_beneficiario) REFERENCES Beneficiario(cpf),
+  FOREIGN KEY(cpf_dependente) REFERENCES Dependente(cpf_dependente)
+);
+
+CREATE TABLE AquisicaoPlanoIndividual(
+  CPF_beneficiario CHAR(11) NOT NULL,
+  ID_plano INT NOT NULL,
+  PRIMARY KEY(cpf_beneficiario, id_plano),
+  FOREIGN KEY(ID_plano) REFERENCES PlanoDeSaude(id_plano),
+  FOREIGN KEY(cpf_beneficiario) REFERENCES Beneficiario(cpf)
+ );
+ 
+ CREATE TABLE RealizaProcedimentoTitular(
+    cpf_paciente CHAR(11) NOT NULL,
+    id_plano INT NOT NULL,
+    ID_procedimento INT NOT NULL,
+    cnpj_estabelecimento char(14) NOT NULL,
+    data date not null,
+    hora time,
+    PRIMARY KEY(cpf_paciente, id_plano, id_procedimento, cnpj_estabelecimento, data),
+    FOREIGN KEY(cpf_paciente) REFERENCES PessoaFisica(cpf),
+    FOREIGN KEY(id_plano) REFERENCES ProcedimentosSuportados(id_plano),
+    FOREIGN KEY(cnpj_estabelecimento) REFERENCES ProcedimentosSuportados(cnpj),
+    FOREIGN KEY(id_procedimento) REFERENCES ProcedimentosSuportados(id_procedimento)                                                     
+ );
+  
+  CREATE TABLE RealizaProcedimentoDependente(
+   cpf_paciente CHAR(11) NOT NULL,
+    id_plano INT NOT NULL,
+    ID_procedimento INT NOT NULL,
+    cnpj_estabelecimento char(14) NOT NULL,
+    data date not null,
+    hora time,
+    PRIMARY KEY(cpf_paciente, id_plano, id_procedimento, cnpj_estabelecimento, data),
+    FOREIGN KEY(cpf_paciente) REFERENCES Dependente(cpf),
+    FOREIGN KEY(id_plano) REFERENCES ProcedimentosSuportados(id_plano),
+    FOREIGN KEY(cnpj_estabelecimento) REFERENCES ProcedimentosSuportados(cnpj),
+    FOREIGN KEY(id_procedimento) REFERENCES ProcedimentosSuportados(id_procedimento) 
+ );
+
+ CREATE TABLE Receita(
+   ID_receita INT NOT NULL PRIMARY KEY,
+   receita BLOB NOT NULL
+  );
+ 
+CREATE TABLE SolicitacaoMedicamento(
+  CPF_solicitante CHAR(11) NOT NULL,
+  ID_medicamento INT NOT NULL,
+  ID_plano INT NOT NULL,
+  CNPJ_farmacia CHAR(14) NOT NULL,
+  data date NOT NULL,
+  hora time NOT NULL,
+  ID_receita INT(20) NOT NULL,
+  PRIMARY KEY(CPF_solicitante, ID_medicamento, ID_plano, CNPJ_farmacia, data),
+  FOREIGN KEY(ID_receita) REFERENCES Receita(ID_receita),
+  FOREIGN KEY(id_medicamento) REFERENCES MedicamentosSuportados(id_medicamento),
+  FOREIGN KEY(cnpj_farmacia) REFERENCES MedicamentosSuportados(cnpj),
+  FOREIGN KEY(id_plano) REFERENCES MedicamentosSuportados(id_plano),
+  FOREIGN KEY(cpf_solicitante) REFERENCES PessoaFisica(cpf)
+);
