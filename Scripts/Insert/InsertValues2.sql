@@ -1,4 +1,3 @@
--- Active: 1679926847247@@127.0.0.1@3306
 INSERT INTO "Operadoras"(CNPJ, email, registro_de_operadora, nome_fantasia, telefone) 
 VALUES ("33333333333333", 'exemplo@gmail.com', 001922, 'Hapvida Assistência Médica', '92911111111'),
     ("00000000000000", 'exemplo@gmail.com', 001924, 'Bradesco Saúde', '92911111112'),
@@ -24,18 +23,12 @@ VALUES ('11111111111114', 'MED1', 'SL', 'Medico Manaus', 002, 'P', 'Rua jasmin',
 INSERT INTO "Procedimentos"(descricao, diretriz_de_utilizacao, "PAC", segmento, preco, subtipo_do_procedimento,tipo)
 VALUES ('Cirurgia de braço', 'Controlado', 1, 'ambulatoria', 1000, 'cirurgia', 'procedimento cirúrgico'),
     ('Cirurgia de perna', 'Controlado', 1, 'ambulatoria', 1000, 'cirurgia', 'procedimento cirúrgico');
-
-SELECT * FROM "EstabelecimentoMedico";
-SELECT * FROM "PlanoDeSaude";
-
 INSERT INTO "PlanoHospitalar"("CNPJ", id_plano)
-VALUES ('11111111111114', 1);
+VALUES ('11111111111114', 1),
+    ('11111111111114', 1);
 
 INSERT INTO "PlanoFarmaceutico"("CNPJ", id_plano)
 VALUES ('22222222222222', 1);
-
-
-SELECT * FROM "Procedimentos";
 
 INSERT INTO "ProcedimentosSuportados"("CNPJ", id_plano, id_procedimento)
 VALUES ('22222222222222', 1, 1);
