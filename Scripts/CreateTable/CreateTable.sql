@@ -1,3 +1,4 @@
+-- Active: 1679926847247@@127.0.0.1@3306
 CREATE TABLE Operadoras (
   CNPJ CHAR(14) PRIMARY KEY, 
   email VARCHAR(50) NOT NULL, 
@@ -7,10 +8,11 @@ CREATE TABLE Operadoras (
 );
 
 CREATE TABLE PlanoDeSaude (
-  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+  id_plano INTEGER PRIMARY KEY AUTOINCREMENT, 
   titulo VARCHAR(100) NOT NULL, 
   preco DOUBLE NOT NULL, 
   tipo VARCHAR(2) NOT NULL, 
+  CNPJ CHAR(14) NOT NULL,
   FOREIGN KEY(CNPJ) REFERENCES Operadoras(CNPJ)
 );
 
@@ -37,7 +39,7 @@ CREATE TABLE Medicamentos (
 CREATE TABLE EstabelecimentoMedico (
   CNPJ CHAR(14) PRIMARY KEY, 
   nome_empresarial VARCHAR(100) NOT NULL, 
-  nome_fantasia VARCHAR(100) NOT NULL
+  nome_fantasia VARCHAR(100) NOT NULL,
   natureza_juridica CHAR(2) NOT NULL, 
   CNES INT NOT NULL, 
   tipo_de_gestao CHAR NOT NULL, 
@@ -55,42 +57,42 @@ CREATE TABLE Procedimentos (
   tipo VARCHAR(50) NOT NULL, 
   segmento VARCHAR(100) NOT NULL, 
   PAC BOOLEAN NOT NULL, 
-  diretriz_de_utilizacao VARCHAR(100) NOT NULL,
+  diretriz_de_utilizacao VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE PlanoHospitalar (
   CNPJ CHAR(14), 
-  id INT,
-  PRIMARY KEY(CNPJ, id),
+  id_plano INT,
+  PRIMARY KEY(CNPJ, id_plano),
   FOREIGN KEY(CNPJ) REFERENCES EstabelecimentoMedico(CNPJ),
-  FOREIGN KEY(id) REFERENCES PlanoDeSaude(id),
+  FOREIGN KEY(id_plano) REFERENCES PlanoDeSaude(id_plano)
 );
 
 CREATE TABLE PlanoFarmaceutico (
   CNPJ CHAR(14), 
-  id INT,
-  PRIMARY KEY(CNPJ, id),
+  id_plano INT,
+  PRIMARY KEY(CNPJ, id_plano),
   FOREIGN KEY(CNPJ) REFERENCES Farmacias(CNPJ),
-  FOREIGN KEY(id) REFERENCES PlanoDeSaude(id)
+  FOREIGN KEY(id_plano) REFERENCES PlanoDeSaude(id_plano)
 );
 
 CREATE TABLE ProcedimentosSuportados (
   id_procedimento INT, 
   CNPJ CHAR(14), 
-  id INT,
-  PRIMARY KEY(CNPJ, id, id_procedimento),
+  id_plano INT,
+  PRIMARY KEY(CNPJ, id_plano, id_procedimento),
   FOREIGN KEY(CNPJ) REFERENCES EstabelecimentoMedico(CNPJ),
-  FOREIGN KEY(id) REFERENCES PlanoDeSaude(id),
+  FOREIGN KEY(id_plano) REFERENCES PlanoDeSaude(id_plano),
   FOREIGN KEY(id_procedimento) REFERENCES Procedimentos(id_procedimento)
 );
 
 CREATE TABLE MedicamentosSuportados (
   id_medicamento INT, 
   CNPJ CHAR(14), 
-  id INT,
-  PRIMARY KEY(CNPJ, id, id_medicamento),
+  id_plano INT,
+  PRIMARY KEY(CNPJ, id_plano, id_medicamento),
   FOREIGN KEY(CNPJ) REFERENCES EstabelecimentoMedico(CNPJ),
-  FOREIGN KEY(id) REFERENCES PlanoDeSaude(id),
+  FOREIGN KEY(id_plano) REFERENCES PlanoDeSaude(id_plano),
   FOREIGN KEY(id_medicamento) REFERENCES Medicamentos(id_medicamento)
 );
 
