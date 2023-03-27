@@ -4,7 +4,8 @@ VALUES ("33333333333333", 'exemplo@gmail.com', 001922, 'Hapvida Assistência Mé
     ("11111111111111", 'exemplo@gmail.com', 001923, 'Amil Assistência Médica', '92911111113');
 
 INSERT INTO PlanoDeSaude (preco, tipo, titulo, CNPJ) 
-VALUES (120.5, 'I', 'Plano de Exemplo', '33333333333333'),
+VALUES (220.5, 'F', 'Plano de Exemplo', '33333333333333'),
+	(120.5, 'I', 'Plano de Exemplo', '33333333333333'),
     (220.5, 'E', 'Plano de Exemplo', '33333333333333');
 
 
@@ -53,6 +54,9 @@ INSERT INTO Empresa VALUES
 ('12345678901234', 'Empresa Raio de Sol', 'Empresa Raio de Sol LTDA', '010101010101', '1980-01-11', 'Rua A, 123', 'SP', 'Centro', '01010101', 100),
 ('98765432109876', 'Empresa Rio Negro', 'Empresa Rio Negro S.A.', '020202020202', '2002-05-15', 'Rua B, 456', 'RJ', 'Laranjeiras', '02020202', 200),
 ('45678901234567', 'Empresa Margarida', 'Empresa Margarida ME', '030303030303', '2010-08-10', 'Rua C, 789', 'MG', 'Savassi', '03030303', 300);
+
+INSERT INTO EmpresaMEI VALUES ('12345678901234', 'CCMEI.pdf', 2);
+INSERT INTO EmpresasDiversas VALUES('98765432109876','contrato.pdf', 'fgts.PDF', 'EMP', 2);
 
 --INSERIR NA TABELA PessoaFisica
 INSERT INTO PessoaFisica VALUES
@@ -144,6 +148,21 @@ INSERT INTO ProcedimentosSuportados (id_procedimento, CNPJ, id_plano) VALUES
 (8, '67890123456789', 2),
 (1, '67890123456789', 1),
 (2, '67890123456789', 2);
+  
+  
+INSERT INTO AquisicaoPlanoFamilia VALUES
+('12345678901', '11111111111', 3);
+INSERT INTO AquisicaoPlanoFamilia VALUES
+  ('12345678901', '22222222222', 3);
+  
+INSERT INTO AquisicaoPlanoFamilia VALUES
+('45678901234', '77777777777', 3);
+INSERT INTO AquisicaoPlanoFamilia VALUES
+('45678901234', '88888888888', 3);
+  
+  
+INSERT INTO AquisicaoPlanoIndividual VALUES
+('34567890123', 1);
 
 -- Inserir em RealizaProcedimentoTitutlar
 INSERT INTO RealizaProcedimentoTitular VALUES ('34567890123', 1, 1, '67890123456789', '2021-05-10', '09:30:00');
@@ -158,3 +177,6 @@ INSERT INTO RealizaProcedimentoTitular VALUES ('21098765432', 1, 3, '45678901234
 INSERT INTO RealizaProcedimentoTitular VALUES ('90123456789', 2, 4, '45678901234567', '2023-02-03', '12:40:00');
 INSERT INTO RealizaProcedimentoTitular VALUES ('21098765432', 2, 2, '67890123456789', '2020-05-21', '19:35:00');
 
+INSERT INTO RealizaProcedimentoDependente VALUES ('22222222222', 3, 2, '67890123456789', '2021-10-11', '09:30:00');
+
+INSERT INTO SolicitacaoMedicamento VALUES('34567890123', 1, 1, '12345678901234', '2022-10-09', '12:34:19', NULL)

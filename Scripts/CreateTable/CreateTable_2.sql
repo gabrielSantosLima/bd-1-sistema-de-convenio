@@ -183,7 +183,7 @@ CREATE TABLE Dependente(
   ID_plano INT NOT NULL,
   PRIMARY KEY(cpf_dependente, CPF_beneficiario),
   FOREIGN KEY(ID_plano) REFERENCES PlanoDeSaude(id_plano),
-  FOREIGN KEY(cpf_beneficiario) REFERENCES Beneficiario(cpf),
+  FOREIGN KEY(cpf_beneficiario) REFERENCES Dependente(cpf_responsavel),
   FOREIGN KEY(cpf_dependente) REFERENCES Dependente(cpf_dependente)
 );
 
@@ -235,7 +235,7 @@ CREATE TABLE SolicitacaoMedicamento(
   CNPJ_farmacia CHAR(14) NOT NULL,
   data date NOT NULL,
   hora time NOT NULL,
-  ID_receita INT(20) NOT NULL,
+  ID_receita INT(20),
   PRIMARY KEY(CPF_solicitante, ID_medicamento, ID_plano, CNPJ_farmacia, data),
   FOREIGN KEY(ID_receita) REFERENCES Receita(ID_receita),
   FOREIGN KEY(id_medicamento) REFERENCES MedicamentosSuportados(id_medicamento),
